@@ -24,19 +24,19 @@ int partition(int a[], int left, int right)
     return i;
 }
   
-int findK(int arr[], int l, int r, int k)
+int findK(int arr[], int left, int right, int k)
 {
-    int index = partition(arr, l, r);
+    int index = partition(arr, left, right);
 
-    if (index - l == k - 1){
+    if (index - left == k - 1){
         return index;
     }
 
-    if (index - l > k - 1){
-        return findK(arr, l, index - 1, k);
+    if (index - left > k - 1){
+        return findK(arr, left, index - 1, k);
     }
 
-    return findK(arr, index + 1, r, k - index + l - 1);
+    return findK(arr, index + 1, right, k - index + left - 1);
 }
 
 void printQuick(int x[], int k, int n){
