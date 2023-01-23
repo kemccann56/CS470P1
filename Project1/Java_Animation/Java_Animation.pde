@@ -254,12 +254,15 @@ void checkHeight(float num) {
 //   By Kyle McCann
 
 void merge(float a[], int left, int midpt, int right) { 
+  // Find size of temporary subarrays using passed indicies
   int sizeLeft = midpt - left + 1;
   int sizeRight = right - midpt;
   
+  // Alocate temporary subarrays
   float vLeft[] =  new float[sizeLeft]; 
   float vRight[] =  new float[sizeRight];
    
+  // Populate temporary subarrays
   for (int i = 0; i < sizeLeft; i++){
       vLeft[i] = a[left + i];
   }   
@@ -268,10 +271,12 @@ void merge(float a[], int left, int midpt, int right) {
       vRight[i] = a[midpt + 1 + i];
   }
 
+  //Initialize pointers for two temporary arrays and the in progress merged array
   int indexLeft, indexRight, indexMerged;
   indexLeft = indexRight = 0;
   indexMerged = left;
   
+  //Main merge while both subarrays have values, compare current value in each subarray (while pointer is not past the array bounds)
   while ((indexLeft < sizeLeft) && (indexRight < sizeRight)){
       if (vLeft[indexLeft] <= vRight[indexRight]){
           a[indexMerged] = vLeft[indexLeft];
@@ -286,12 +291,14 @@ void merge(float a[], int left, int midpt, int right) {
       indexMerged++;
   }
   
+  //Merge step when left side has values still
   while (indexLeft < sizeLeft){
       a[indexMerged] = vLeft[indexLeft];
       indexLeft++;
       indexMerged++;
   }
   
+  //Merge step when right side has values still
   while (indexRight < sizeRight){
       a[indexMerged] = vRight[indexRight];
       indexRight++;
@@ -299,19 +306,21 @@ void merge(float a[], int left, int midpt, int right) {
   }
 }
  
-    // Main function that sorts array using
-    // merge()
+    // Main function that drives recursive merge step
 void MergeSort(float a[], int left, int right) { // ,int offset) 
+  //Base case, once indicies overlap, there is not more to compare/merge (also handles already sorted special case of 0 or 1 values)
   if (left >= right){
     return;
   }
   
   int midpt;
   
+  //Calculate two subarrays that need to be sorted
   midpt = left + ((right - left) / 2);
   MergeSort(a, left, midpt);
   MergeSort(a, midpt + 1, right);
   
+  //Merge two sorted halves
   merge(a, left, midpt, right);
   
   update(a); // Adds array to the list to be drawn
@@ -322,17 +331,20 @@ void MergeSort(float a[], int left, int right) { // ,int offset)
 //  Quick Select Functions
 //  By Kyle McCann
 
+//Utility swap function, to not lose value upon updating a[].
 void swap(float a[], int first, int second) {
     float temp = a[first];
     a[first] = a[second];
     a[second] = temp;
 }
 
-int partition(float a[], int left, int right)
+int partition(float a[], int left, int right) //Main partition step
 {
+    //x is saved as pivot, last element in the array, i is current index
     float x = a[right];
     int i = left;
 
+    //Put all elements less than pivot to the left of the pivot and return the index of the sorted pivot after
     for (int j = left; j <= right - 1; j++) {
         if (a[j] < x) {
             swap(a, i, j);
@@ -345,17 +357,21 @@ int partition(float a[], int left, int right)
 
 float findK(float arr[], int left, int right, int k)
 {
-    int index = partition(arr, left, right);
+    int index = partition(arr, left, right); 
 
-    if (index - left == k - 1) {
+    //Base Case - If the index of the sorted pivot is k - 1, then we know our top k values are in front and we can return
+    if (index - left == k - 1) { 
         update(arr);
         return index;
     }
-
+  
+    //If pivot index is greater than k - 1, we know we need to partition the remaining left side
     if (index - left > k - 1) {
         update(arr);
         return findK(arr, left, index - 1, k);
     }
     update(arr); // Adds array to the list to be drawn
+
+    //Pivot index is less than k -1, we need to parition the remaining right side
     return findK(arr, index + 1, right, k - index + left - 1);
 }
