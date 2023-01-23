@@ -43,9 +43,9 @@ ArrayList<float[]> arrays = new ArrayList<float[]>();
  
  // This function fills the background
 void setup() {
-  size(840, 480); // window size
+  size(840, 500); // Window size. Small: (840, 500). Medium: (1200, 720).
   textSize(32);
-  frameRate(40); // decrease to slow down animation, increase to speed up
+  frameRate(40); // Decrease to slow down animation, increase to speed up
   
   random = new float[floor((width/w))]; // Initializing random array
   original = new float[floor((width/w))]; // Keeping original array incase user wants to directly compare sorts
@@ -61,14 +61,14 @@ void setup() {
 void draw() {
   if (state == 0) { // state 0: User chooses Merge Sort or Quick Select animation
     background(0);
-    
-    text("Top K Integers - Processing Java", 10, 30);
-    text("Click in this window to start typing. \nFirst, type in K between 1 and " + (random.length -1)+ ", then press enter.", 30, 100);
-    text("Next, Press M for Merge Sort then press enter.", 30, 200);
-    text("Or, press Q for Quick Select then press enter.", 30, 250);
-    text("(Restart the program to get a new random array)", 30, 350);
-    text("Please do not hit backspace -- it breaks the program", 30, 400);
-    text("Input: " + buffer, 30, 450);
+    textAlign(CENTER, CENTER);
+    text("Top K Integers - Processing Java", width/2, 30);
+    text("Click in this window to start typing. \nFirst, type in K between 1 and " + (random.length -1)+ ", then press enter.", width/2, 100);
+    text("Next, Press M for Merge Sort then press enter.", width/2, 200);
+    text("Or, press Q for Quick Select then press enter.", width/2, 250);
+    text("(Restart the program to get a new random array)", width/2, 350);
+    text("Please do not hit backspace -- it breaks the program", width/2, 400);
+    text("Input: " + buffer, width/2, 450);
   }
   
   // state 1: Array sorting
@@ -94,13 +94,15 @@ void draw() {
       textSize(16);
       
       checkHeight(random[i]);
+      textAlign(LEFT, LEFT);
       text(" " + round(random[i]) + " ", i*w, numHeight);
     }
     
     stroke(0);
     fill(255); // Color text white
     textSize(64);
-    text("Unsorted Array", 200, 400);
+    textAlign(CENTER, CENTER);
+    text("Unsorted Array", width/2,60);
     
     // Sort the array
     startTime = System.nanoTime();
@@ -141,6 +143,7 @@ void draw() {
     fill(255); // Color text white
     
     checkHeight(arrays.get(x)[y]);
+    textAlign(LEFT, LEFT);
     text(" " + round(arrays.get(x)[y]) + " ", y*w, numHeight);
     
     y++;
@@ -185,6 +188,7 @@ void draw() {
     fill(255); // Color text white
     
     checkHeight(random[z]);
+    textAlign(LEFT, LEFT);
     text(" " + round(random[z]) + " ", z*w, numHeight);
     
     z++;
